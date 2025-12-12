@@ -275,7 +275,8 @@ export default {
     HDR_METADATA_FORMAT_VALUES: {
         ST2094_10: 'ST2094-10',
         SL_HDR2: 'SL-HDR2',
-        ST2094_40: 'ST2094-40'
+        ST2094_40: 'ST2094-40',
+        HDR_VIVID: 'T/UWA 005'
     },
     MEDIA_CAPABILITIES_API: {
         COLORGAMUT: {
@@ -291,7 +292,8 @@ export default {
         HDR_METADATATYPE: {
             SMPTE_ST_2094_10: 'smpteSt2094-10',
             SLHDR2: 'slhdr2',
-            SMPTE_ST_2094_40: 'smpteSt2094-40'
+            SMPTE_ST_2094_40: 'smpteSt2094-40',
+            HDR_VIVID: 'tuwa005'
         }
     },
     XML: 'XML',

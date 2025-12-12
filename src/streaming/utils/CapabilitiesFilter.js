@@ -396,6 +396,8 @@ function CapabilitiesFilter() {
                 cfg.hdrMetadataType = Constants.MEDIA_CAPABILITIES_API.HDR_METADATATYPE.SLHDR2; // Note: This is not specified by W3C
             } else if (prop.schemeIdUri === Constants.HDR_METADATA_FORMAT_SCHEME_ID_URI && prop.value === Constants.HDR_METADATA_FORMAT_VALUES.ST2094_40) {
                 cfg.hdrMetadataType = Constants.MEDIA_CAPABILITIES_API.HDR_METADATATYPE.SMPTE_ST_2094_40;
+            } else if (prop.schemeIdUri === Constants.HDR_METADATA_FORMAT_SCHEME_ID_URI && prop.value === Constants.HDR_METADATA_FORMAT_VALUES.HDR_VIVID) {
+                cfg.hdrMetadataType = Constants.MEDIA_CAPABILITIES_API.HDR_METADATATYPE.HDR_VIVID; 
             } else if (prop.schemeIdUri === Constants.HDR_METADATA_FORMAT_SCHEME_ID_URI) {
                 cfg.isSupported = false;
             }
