@@ -40,21 +40,20 @@ import MediaPlayerEvents from '../MediaPlayerEvents.js';
 function ScheduleController(config) {
 
     config = config || {};
-    const context = this.context;
-    const eventBus = EventBus(context).getInstance();
-    const dashMetrics = config.dashMetrics;
-    const mediaPlayerModel = config.mediaPlayerModel;
-    const fragmentModel = config.fragmentModel;
     const abrController = config.abrController;
-    const playbackController = config.playbackController;
-    const textController = config.textController;
-    const type = config.type;
     const bufferController = config.bufferController;
+    const context = this.context;
+    const dashMetrics = config.dashMetrics;
+    const eventBus = EventBus(context).getInstance();
+    const fragmentModel = config.fragmentModel;
+    const mediaPlayerModel = config.mediaPlayerModel;
+    const playbackController = config.playbackController;
     const representationController = config.representationController
     const settings = config.settings;
+    const textController = config.textController;
+    const type = config.type;
 
-    let shouldCheckPlaybackQuality,
-        hasVideoTrack,
+    let hasVideoTrack,
         initSegmentRequired,
         instance,
         lastFragmentRequest,
@@ -64,7 +63,8 @@ function ScheduleController(config) {
         scheduleTimeout,
         streamInfo,
         switchTrack,
-        timeToLoadDelay;
+        timeToLoadDelay,
+        shouldCheckPlaybackQuality;
 
     function setup() {
         logger = Debug(context).getInstance().getLogger(instance);
@@ -326,7 +326,9 @@ function ScheduleController(config) {
      */
     function _getGenericBufferTarget() {
         try {
-            const currentRepresentation = representationController.getCurrentRepresentation();
+            const currentRepresentation = (settings.get().streaming.enhancement.enabled) ?
+                representationController.getCurrentCompositeRepresentation() :
+                representationController.getCurrentRepresentation();
             const streamInfo = currentRepresentation.mediaInfo.streamInfo;
             if (abrController.isPlayingAtTopQuality(currentRepresentation)) {
                 const isLongFormContent = streamInfo.manifestInfo.duration >= settings.get().streaming.buffer.longFormContentDurationThreshold;

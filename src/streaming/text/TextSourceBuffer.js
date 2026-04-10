@@ -41,8 +41,7 @@ import EventBus from '../../core/EventBus.js';
 import Events from '../../core/events/Events.js';
 import DashJSError from '../vo/DashJSError.js';
 import Errors from '../../core/errors/Errors.js';
-import {Cta608Parser} from '@svta/common-media-library/cta/608/Cta608Parser';
-import {extractCta608DataFromSample} from '@svta/common-media-library/cta/608/extractCta608DataFromSample';
+import { Cta608Parser, extractCta608DataFromSample } from '@svta/cml-608';
 import DashConstants from '../../dash/constants/DashConstants.js';
 
 function TextSourceBuffer(config) {
@@ -70,7 +69,6 @@ function TextSourceBuffer(config) {
         initializationSegmentReceived,
         timescale,
         fragmentedTracks,
-        firstFragmentedSubtitleStart,
         currFragmentedTrackIdx,
         embeddedTracks,
         embeddedTimescale,
@@ -94,7 +92,6 @@ function TextSourceBuffer(config) {
         fragmentModel = null;
         timescale = NaN;
         fragmentedTracks = [];
-        firstFragmentedSubtitleStart = null;
         initializationSegmentReceived = false;
     }
 
@@ -293,9 +290,6 @@ function TextSourceBuffer(config) {
             }
             samplesInfo = boxParser.getSamplesInfo(bytes);
             sampleList = samplesInfo.sampleList;
-            if (sampleList.length > 0) {
-                firstFragmentedSubtitleStart = sampleList[0].cts - chunk.start * timescale;
-            }
 
             if (codecType.search(Constants.STPP) >= 0) {
                 _appendFragmentedSttp(bytes, sampleList, codecType);
@@ -351,7 +345,6 @@ function TextSourceBuffer(config) {
         const captionArray = [];
         for (i = 0; i < sampleList.length; i++) {
             const sample = sampleList[i];
-            sample.cts -= firstFragmentedSubtitleStart;
             const timestampOffset = _getTimestampOffset();
             const start = timestampOffset + sample.cts / timescale;
             const end = start + sample.duration / timescale;
@@ -634,18 +627,18 @@ function TextSourceBuffer(config) {
     }
 
     instance = {
-        initialize,
-        addMediaInfos,
-        resetMediaInfos,
-        getStreamId,
-        append,
         abort,
         addEmbeddedTrack,
-        resetEmbedded,
+        addMediaInfos,
+        append,
         getConfig,
-        setCurrentFragmentedTrackIdx,
+        getStreamId,
+        initialize,
         remove,
-        reset
+        reset,
+        resetEmbedded,
+        resetMediaInfos,
+        setCurrentFragmentedTrackIdx,
     };
 
     setup();
